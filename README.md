@@ -7,6 +7,7 @@ Dev steps:
 In stocked-client directory:
 - npm install
 - npm start
+
 In stocked-backend directory:
 - npm install
 - npm install -g nodemon
