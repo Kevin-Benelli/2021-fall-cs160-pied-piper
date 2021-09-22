@@ -5,7 +5,7 @@ All updates to master will get automatically deployed using Github Actions.
 
 Dev steps:
 
-In stocked-backend directory:
+In stocked-express-backend directory:
 - npm install
 - npm install -g nodemon
 - nodemon server.js 
