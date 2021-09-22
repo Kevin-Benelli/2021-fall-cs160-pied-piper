@@ -4,5 +4,12 @@ Hosted here: https://kevin-benelli.github.io/2021-fall-cs160-pied-piper/
 All updates to master will get automatically deployed using Github Actions.
 
 Dev steps:
-"npm start" in stocked-client directory
-then "nodeman server.js" from stocked-backend directory 
+In stocked-client directory:
+- npm install
+- npm start
+In stocked-backend directory:
+- npm install
+- npm install -g nodemon
+- nodemon server.js 
+React page will be on localhost:3000/2021-fall-cs160-pied-piper
+Nodemon will be using localhost:5000
