@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: stocked
+        working-directory: stocked-client
 
     strategy:
       matrix:
@@ -27,5 +27,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
           branch: gh-pages # The branch the action should deploy to.
-          folder: stocked/build # The folder the action should deploy.
+          folder: stocked-client/build # The folder the action should deploy.
       
