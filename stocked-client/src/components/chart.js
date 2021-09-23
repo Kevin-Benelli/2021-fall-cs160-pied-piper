@@ -53,8 +53,8 @@ export const Chart = (props) => {
         to: to
       } 
     }).then((response) => {
-      console.log("Got response")
-      console.log(response)
+      // console.log("Got response")
+      // console.log(response)
       setChartData(response.data.chartData);
       setError(response.data.error);
       setLoaded(true);
