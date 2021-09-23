@@ -3,8 +3,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
-  BrowserRouter as Router,
-  Switch,
+  HashRouter,
   Route
 } from "react-router-dom";
 import { Header } from './components/header';
@@ -21,21 +20,20 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    
       <div className="center">
       <div className="App">
         <Header/>
         {homePage}
         
-          <Switch>
+          <HashRouter basename="/2021-fall-cs160-pied-piper">
 
             {/* all routes that look like /ticker/xyz will be handled by the ChartPage component */}
-            <Route path="/2021-fall-cs160-pied-piper/ticker/:ticker" children={<ChartPage/>} />
+            <Route path="/ticker/:ticker" children={<ChartPage/>} />
 
-          </Switch>
+          </HashRouter>
       </div>
     </div>
-    </Router>
   );
 }
 
