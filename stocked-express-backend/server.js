@@ -13,6 +13,13 @@ app.get("/", cors(), async(req, res) => {
 
 app.post("/post_login", async(req, res) => {
   let { username, password } = req.body
+  console.log("/post_login");
+  console.log("Express received: ", req.body) // ***this is where you would post to the MYSQL DB***
+})
+
+app.post("/post_create_account", async(req, res) => {
+  let { username, password } = req.body
+  console.log("/post_create_account");
   console.log("Express received: ", req.body) // ***this is where you would post to the MYSQL DB***
 })
 

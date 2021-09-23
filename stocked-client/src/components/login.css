@@ -9,3 +9,7 @@
 .login .password {
   margin-bottom: 5px;
 }
+
+.login .login-submit {
+  margin-right: 5px;
+}

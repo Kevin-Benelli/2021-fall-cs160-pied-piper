@@ -7,16 +7,20 @@ import './login.css';
 
 export const Login = () => {
 
-  const [username, setUsername] = useState("") // init to empty string
-  const [showPassword, setShowPassword] = useState(false)
-  const [password, setPassword] = useState("") // init to empty string
+  const [username, setUsername] = useState(""); // init to empty string
+  const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState(""); // init to empty string
 
-  // Function posts name to express backend
-  async function postLogin(e){
+
+  // Post username and password for login/account creation to express backend
+  async function postAction(e, action){
     e.preventDefault() // don't refresh form on submit
 
+    console.log(e)
+    console.log(action)
+
     try{
-        await axios.post("http://localhost:5000/post_login", {
+        await axios.post(`http://localhost:5000/post_${action}`, {
             username,
             password
         })
@@ -44,14 +48,12 @@ export const Login = () => {
 
   let login = (
     <div className="login center">
-      <form onSubmit ={postLogin}> 
-        {/* <input className="bp3-input" type="text" value={username} placeholder="Username" onChange={(e) => setUsername(e.target.value)} /><br/> */}
+      <form> 
         <InputGroup className="username"
                     placeholder="Username"
                     onChange={(e) => setUsername(e.target.value)}
                     value={username}
                     />
-        {/* <input className="bp3-input" type="text" value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} /><br/> */}
         <InputGroup className="password"
                     placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
@@ -59,7 +61,14 @@ export const Login = () => {
                     rightElement={lockButton}
                     type={showPassword ? "text" : "password"}
                     />
-        <Button type="submit"> Submit </Button>
+        <Button className="login-submit"
+                onClick={ e => {;
+                  postAction(e, "login");
+                }}> Login </Button>
+        <Button className="create-account-submit"
+                onClick={ e => {
+                  postAction(e, "create_account");
+                }}> Create Account </Button>
       </form>
     </div>
   );
