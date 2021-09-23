@@ -1,0 +1,22 @@
+.settings-body{
+    margin-top: 25vh;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+
+.search-navbar {
+    background-color: #393e49;
+    margin: 10vh auto;
+    padding: 10;
+
+  }
+
+.search-bar {
+    display: inline-block;
+}
+
+.search-bar input {
+    height: 30px;
+    width: 500px;
+}

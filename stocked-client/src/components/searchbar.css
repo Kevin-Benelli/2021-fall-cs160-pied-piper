@@ -1,0 +1,9 @@
+:root {
+  --logosize: 5vmin
+}
+
+.search-bar {
+  text-align: center;
+  width: 70%;
+  margin: 0 auto;
+}

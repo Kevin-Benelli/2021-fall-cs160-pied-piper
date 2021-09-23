@@ -8,6 +8,9 @@ import {
 } from "react-router-dom";
 import { Header } from './components/header';
 import { ChartPage } from './components/chartpage';
+import { SettingsPage } from './components/settingspage';
+import { SearchBar } from './components/searchbar';
+
 
 function App() {
   
@@ -30,6 +33,12 @@ function App() {
 
             {/* all routes that look like /ticker/xyz will be handled by the ChartPage component */}
             <Route path="/ticker/:ticker" children={<ChartPage/>} />
+            <Route path="/settings" children={<SettingsPage />}/>
+            
+            <Route path="/search" children={<SearchBar />}/>
+
+            {/* <Route path="/news/:ticker" component={<NewsPage} /> */}
+
 
           </HashRouter>
       </div>
