@@ -11,9 +11,9 @@ app.get("/", cors(), async(req, res) => {
   res.send("Yah boi is workin")
 })
 
-app.post("/post_name", async(req, res) => {
-  let { name } = req.body
-  console.log("Hello %s From Express!: ", name) // ***this is where you would post to the MYSQL DB***
+app.post("/post_login", async(req, res) => {
+  let { username, password } = req.body
+  console.log("Express received: ", req.body) // ***this is where you would post to the MYSQL DB***
 })
 
 app.get("/home", cors(), async (req, res) => {

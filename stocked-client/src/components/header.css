@@ -1,0 +1,21 @@
+:root {
+  --logosize: 5vmin
+}
+
+.header {
+  text-align: center;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.header-navbar {
+  background-color: #393e49;
+  height: calc(var(--logosize) + 20px);
+  margin: 10px auto;
+  padding: 10px 10px 10px 10px;
+}
+
+.header-logo {
+  height: var(--logosize);
+  pointer-events: none;
+} 
