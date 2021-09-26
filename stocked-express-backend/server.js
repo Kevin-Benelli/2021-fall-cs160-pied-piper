@@ -28,6 +28,9 @@ app.post("/post_login", async(req, res) => {
   //db.query("SELECT username FROM users WHERE username = ? AND password = ?", [username, password],
   //console.log(ers))
   db.query("SELECT username FROM users WHERE username = ? AND password = ?", [username, password], (err, res) => {
+    if (res.length == 0)
+    return console.log("Logging in Failed")
+    else
     return console.log(res)
   })
   
