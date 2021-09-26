@@ -24,28 +24,32 @@ app.get("/", cors(), async(req, res) => {
 app.post("/post_login", async(req, res) => {
   let { username, password } = req.body
 
-  // Checking if the username and password exists in the database
-  //db.query("SELECT username FROM users WHERE username = ? AND password = ?", [username, password],
-  //console.log(ers))
-  db.query("SELECT username FROM users WHERE username = ? AND password = ?", [username, password], (err, res) => {
-    if (res.length == 0)
-    return console.log("Logging in Failed")
-    else
-    return console.log(res)
-  })
-  
   console.log("/post_login");
   console.log("Express received: ", req.body) // ***this is where you would post to the MYSQL DB***
+  // Checking if the username and password exists in the database
+  // If the user exists, we return the username. Otherwise, we return a "Logging in Failed" message.
+  db.query("SELECT username FROM users WHERE username = ? AND password = ?", [username, password], (err, res) => {
+    if (res.length == 0)
+      return console.log("Logging in failed")
+    else
+      return console.log(res)
+  })
 })
 
 app.post("/post_create_account", async(req, res) => {
   let { username, password } = req.body
 
-  // Adding the username and password to the database
-  db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password]) 
-
   console.log("/post_create_account");
   console.log("Express received: ", req.body) // ***this is where you would post to the MYSQL DB***
+  // Adding the username and password to the database
+  db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password], (err, res) => {
+    if(err)
+      return console.log(err)
+    else
+      return console.log("New user created")
+  })
+
+
 })
 
 app.get("/home", cors(), async (req, res) => {
