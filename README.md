@@ -19,3 +19,16 @@ Dev steps:
 React page will be on localhost:3000/2021-fall-cs160-pied-piper
 
 Nodemon will be using localhost:5000
+
+4. A local MySQL server must also be running.
+    - Follow the steps on the MySQL documentation to install and start MySQL: https://dev.mysql.com/doc/mysql-getting-started/en/
+    - In MySQL, create a database named "stocked" using the following SQL:
+        CREATE DATABASE stocked;
+    - Create a table named "users" with the following SQL:
+        CREATE TABLE users (
+            id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            username VARCHAR(32) NOT NULL,
+            password VARCHAR(32) NOT NULL,
+            PRIMARY KEY (id));
+
+
