@@ -4,13 +4,14 @@ Hosted here: https://kevin-benelli.github.io/2021-fall-cs160-pied-piper/
 All updates to master will get automatically deployed using Github Actions.
 
 Dev steps:
+1. Install nodejs and npm if you don't already have them
 
-In stocked-express-backend directory:
+2. In stocked-express-backend directory:
 - npm install
 - npm install -g nodemon
 - nodemon server.js 
 
-In stocked-client directory:
+3. In stocked-client directory:
 - npm install
 - npm start
 
