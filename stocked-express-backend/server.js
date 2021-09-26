@@ -4,6 +4,15 @@ const cors = require("cors");
 const finnhub = require('finnhub');
 const port = 5000 // localhost 5000
 
+//Creating a database and connection
+const mysql = require("mysql");
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "rootuser",
+  database: "Stocked"
+});
+
 app.use(express.urlencoded({ extended: true}))
 app.use(express.json())
 app.use(cors())
@@ -14,12 +23,24 @@ app.get("/", cors(), async(req, res) => {
 
 app.post("/post_login", async(req, res) => {
   let { username, password } = req.body
+
+  // Checking if the username and password exists in the database
+  //db.query("SELECT username FROM users WHERE username = ? AND password = ?", [username, password],
+  //console.log(ers))
+  db.query("SELECT username FROM users WHERE username = ? AND password = ?", [username, password], (err, res) => {
+    return console.log(res)
+  })
+  
   console.log("/post_login");
   console.log("Express received: ", req.body) // ***this is where you would post to the MYSQL DB***
 })
 
 app.post("/post_create_account", async(req, res) => {
   let { username, password } = req.body
+
+  // Adding the username and password to the database
+  db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password]) 
+
   console.log("/post_create_account");
   console.log("Express received: ", req.body) // ***this is where you would post to the MYSQL DB***
 })
