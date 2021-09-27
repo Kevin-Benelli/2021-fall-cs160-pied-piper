@@ -22,13 +22,15 @@ Nodemon will be using localhost:5000
 
 4. A local MySQL server must also be running.
     - Follow the steps on the MySQL documentation to install and start MySQL: https://dev.mysql.com/doc/mysql-getting-started/en/
-    - In MySQL, create a database named "stocked" using the following SQL:
+    - In MySQL Workbench, run the following SQL:
+        ```sql
         CREATE DATABASE stocked;
-    - Create a table named "users" with the following SQL:
+        use stocked;
         CREATE TABLE users (
             id INT UNSIGNED NOT NULL AUTO_INCREMENT,
             username VARCHAR(32) NOT NULL,
             password VARCHAR(32) NOT NULL,
             PRIMARY KEY (id));
-
+        ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'rootuser';
+        ```
 

@@ -3,27 +3,35 @@ import { useState } from 'react';
 import axios from 'axios'
 import { Button, InputGroup, Intent } from '@blueprintjs/core';
 import { Placement, Popover2, Tooltip2 } from '@blueprintjs/popover2';
+import { Colors } from "@blueprintjs/core";
 import './login.css';
+import { setLocalStorageItem } from 'utils/storage';
 
-export const Login = () => {
+export const Login = (props) => {
+  let { setLoggedInUsername } = props;
 
   const [username, setUsername] = useState(""); // init to empty string
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState(""); // init to empty string
+  const [errorMsg, setErrorMsg] = useState(null); // init to empty string
 
 
   // Post username and password for login/account creation to express backend
   async function postAction(e, action){
     e.preventDefault() // don't refresh form on submit
-
-    console.log(e)
-    console.log(action)
-
     try{
-        await axios.post(`http://localhost:5000/post_${action}`, {
-            username,
-            password
-        })
+        axios.post(`http://localhost:5000/post_${action}`, {
+          username,
+          password
+        }).then((response) => {
+            // response.data holds a message string and an error boolean
+            if(response.data.error) {
+              setErrorMsg(response.data.message);
+            } else {
+              setErrorMsg(null);
+              setLoggedInUsername(username)
+            }
+        });
     }catch(error){
         console.log('Yo something went wrong: %s', error)
     }
@@ -62,13 +70,17 @@ export const Login = () => {
                     type={showPassword ? "text" : "password"}
                     />
         <Button className="login-submit"
-                onClick={ e => {;
+                onClick={ e => {
                   postAction(e, "login");
                 }}> Login </Button>
         <Button className="create-account-submit"
                 onClick={ e => {
                   postAction(e, "create_account");
                 }}> Create Account </Button>
+        <div style={{
+            color: Colors.RED1,
+            marginTop: "5px"
+          }}>{errorMsg}</div>
       </form>
     </div>
   );
