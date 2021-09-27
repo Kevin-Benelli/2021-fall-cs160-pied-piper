@@ -24,25 +24,60 @@ app.get("/", cors(), async(req, res) => {
 app.post("/post_login", async(req, res) => {
   let { username, password } = req.body
 
-  // Checking if the username and password exists in the database
-  //db.query("SELECT username FROM users WHERE username = ? AND password = ?", [username, password],
-  //console.log(ers))
-  db.query("SELECT username FROM users WHERE username = ? AND password = ?", [username, password], (err, res) => {
-    return console.log(res)
-  })
-  
   console.log("/post_login");
-  console.log("Express received: ", req.body) // ***this is where you would post to the MYSQL DB***
+  console.log("Express received: ", req.body) 
+  // Checking if the username and password exists in the database
+  // If the user exists, we return the username. Otherwise, we return a "Logging in Failed" message.
+  db.query("SELECT username FROM users WHERE username = ? AND password = ?", [username, password], (err, result) => {
+    if (result.length == 0) {
+      console.log(err)
+      res.send({
+        message: "Incorrect username/password", 
+        error: true
+      });
+    }
+    else {
+      res.send({
+        message: "Successfully logged in", 
+        error: false
+      });
+    }
+  })
 })
 
 app.post("/post_create_account", async(req, res) => {
-  let { username, password } = req.body
-
-  // Adding the username and password to the database
-  db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password]) 
+  let { username, password } = req.body;
 
   console.log("/post_create_account");
-  console.log("Express received: ", req.body) // ***this is where you would post to the MYSQL DB***
+  console.log("Express received: ", req.body);
+
+  // First check if username exists, can't make account with that name if it does
+  db.query("SELECT username FROM users WHERE username = ?", [username], (err, result) => {
+    if (result.length != 0) { 
+      console.log(err)
+      res.send({
+        message: "Username already exists", 
+        error: true
+      });
+    } else {
+      // Adding the username and password to the database
+      db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password], (err, result) => {
+        if(err) {
+          console.log(err)
+          res.send({
+            message: "Account creation failed", 
+            error: true
+          });
+        }
+        else {
+          res.send({
+            message: "New account created", 
+            error: false
+          });
+        }
+      });
+    }
+  })
 })
 
 app.get("/home", cors(), async (req, res) => {
