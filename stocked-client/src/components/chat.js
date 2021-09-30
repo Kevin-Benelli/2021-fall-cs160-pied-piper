@@ -58,9 +58,24 @@ export const Chat = ({socket, username, chatroom}) => {
         {
           // for each element in message list return <h1> message </h1>
           messageLog.map((messageContent) => {
-              return <h1>{messageContent.message}</h1>
-          })
-        }
+            return (
+
+              // access ids: user-self and user-other to sytle the user respectivley. 
+              // user-self should be left centered and user-other should be on right
+              <div className="message" id={username === messageContent.author ? "user-self" : "user-other"}> 
+              <div>
+                <div className="message-content">
+                  <p>{messageContent.message}</p>
+                </div>
+                <div className="message-meta">
+                  <p id="sender_time">{messageContent.author} Sent: {messageContent.time}</p>
+                </div>
+                
+                </div>
+              </div>
+            );
+          })}
+
       </div>
       
       
@@ -70,6 +85,10 @@ export const Chat = ({socket, username, chatroom}) => {
         placeholder="Lets Talk Stocks..."
         onChange={(event) => {
           setUserMessage(event.target.value)
+        }}
+        onKeyPress={(event) => {
+          // If user types message and presses enter then send the message
+          event.key === "Enter" && sendMessage()
         }}
         />
         <button onClick={sendMessage}>&#9658;</button>
