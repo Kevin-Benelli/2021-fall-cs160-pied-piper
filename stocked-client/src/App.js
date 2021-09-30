@@ -11,6 +11,7 @@ import { ChartPage } from './components/chartpage';
 import { SettingsPage } from './components/settingspage';
 import { SearchBar } from './components/searchbar';
 import { useStickyState } from 'utils/storage';
+import { SocketClient } from 'components/socketclient';
 
 
 function App() {
@@ -50,6 +51,8 @@ function App() {
             <Route path="/settings" children={<SettingsPage />}/>
             
             <Route path="/search" children={<SearchBar />}/>
+
+            <Route path="/chat" children={<SocketClient />}/>
 
             {/* <Route path="/news/:ticker" component={<NewsPage} /> */}
 
