@@ -1,9 +1,14 @@
 const express = require('express'); 
 const app = express(); 
 const cors = require("cors");
-app.use(cors());
 const finnhub = require('finnhub');
 const port = 5000 // localhost 5000
+app.use(express.urlencoded({ extended: true}))
+app.use(express.json())
+app.use(cors())
+
+
+
 
 // Socket.io is requried for chatting service
 const { Server } = require("socket.io")
@@ -33,6 +38,9 @@ io.on("connection", (socket) =>{
 });
 
 
+
+
+
 //Creating a database and connection
 const mysql = require("mysql");
 const db = mysql.createConnection({
@@ -42,16 +50,12 @@ const db = mysql.createConnection({
   database: "Stocked"
 });
 
-app.use(express.urlencoded({ extended: true}))
-app.use(express.json())
-app.use(cors())
 
 
 
-
-app.get("/", cors(), async(req, res) => {
-  res.send("Yah boi is workin")
-})
+// server.get("/", cors(), async(req, res) => {
+//   res.send("Yah boi is workin")
+// })
 
 app.post("/post_login", async(req, res) => {
   let { username, password } = req.body
@@ -182,12 +186,10 @@ app.get("/chart_data", cors(), async (req, res) => {
 })
 
 
+server.listen(port, () => {
+  console.log("SERVER RUNNING");
+});
 
-app.listen(port, () => {
-	console.log(`Listening at http://localhost:${port}`)
-})
-
-
-// server.listen(5000, () => {
-//   console.log("SERVER RUNNING");
-// });
+// app.listen(port, () => {
+// 	console.log(`Listening at http://localhost:${port}`)
+// })
