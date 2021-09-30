@@ -2,7 +2,7 @@ const express = require('express');
 const app = express(); 
 const cors = require("cors");
 const finnhub = require('finnhub');
-const port = 5000 // localhost 5000
+const port = 5001 // localhost 5001
 app.use(express.urlencoded({ extended: true}))
 app.use(express.json())
 app.use(cors())
@@ -30,6 +30,20 @@ const io = new Server(server, {
 // Listen for socket event to be recieved: listens for event with name "connection"
 io.on("connection", (socket) =>{
   console.log(`User Connected: ${socket.id}`); // should console.log the id of the user
+
+  // listens and passes chat room id to socket // this is passed through at the client level
+  socket.on("join_chat_room", (data) => {
+      socket.join(data);
+      console.log(`User ID: ${socket.id} joined the chat room: ${data}`)
+  });
+
+  // listens for message data to be emitted from client side (Chat.js) / creates event send_message
+  socket.on("send_message", (data) => {
+      // Emits messages you send to all other uses in the chatRoom
+      socket.to(data.chatroom).emit("receive_message", data);
+      console.log(data);
+      
+  });
 
   // disconnect from the server at the end
   socket.on("disconnect", () => {

@@ -7,6 +7,10 @@ export const Chat = ({socket, username, chatroom}) => {
     const [messageLog, setMessageLog] = useState([]);
 
 
+    const resetInputField = () => {
+      setUserMessage("");
+    };
+
     const sendMessage = async () => {
       // If user drafts a message then set message for emission
       if (userMessage !== ""){
@@ -87,8 +91,8 @@ export const Chat = ({socket, username, chatroom}) => {
           setUserMessage(event.target.value)
         }}
         onKeyPress={(event) => {
-          // If user types message and presses enter then send the message
-          event.key === "Enter" && sendMessage()
+          // If user types message and presses enter then send the message 
+          event.key === "Enter" && sendMessage() 
         }}
         />
         <button onClick={sendMessage}>&#9658;</button>
