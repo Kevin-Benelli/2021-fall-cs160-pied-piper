@@ -9,7 +9,6 @@ import {
 import { Header } from './components/header';
 import { ChartPage } from './components/chartpage';
 import { SettingsPage } from './components/settingspage';
-import { SearchBar } from './components/searchbar';
 import { useStickyState } from 'utils/storage';
 import { SocketClient } from 'components/socketclient';
 
@@ -49,9 +48,6 @@ function App() {
             {/* all routes that look like /ticker/xyz will be handled by the ChartPage component */}
             <Route path="/ticker/:ticker" children={<ChartPage/>} />
             <Route path="/settings" children={<SettingsPage />}/>
-            
-            <Route path="/search" children={<SearchBar />}/>
-
             <Route path="/chat" children={<SocketClient />}/>
 
             {/* <Route path="/news/:ticker" component={<NewsPage} /> */}

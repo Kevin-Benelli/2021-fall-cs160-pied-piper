@@ -3,8 +3,8 @@ import { Alignment, Navbar, NavbarGroup } from '@blueprintjs/core';
 import logo from '../pics/logo.png';
 import { Login } from './login';
 import './header.css'
-import { getLocalStorageItem } from 'utils/storage';
 import { UserDropdown } from './userdropdown';
+import { SearchBar } from './searchbar';
 
 export const Header = (props) => {
   let { loggedInUsername, setLoggedInUsername } = props;
@@ -16,8 +16,9 @@ export const Header = (props) => {
           <NavbarGroup align={ Alignment.LEFT }>
             <img src={logo} className="header-logo" alt="logo" />
           </NavbarGroup>
-          
+
           <NavbarGroup align={ Alignment.RIGHT }>
+            <SearchBar/>
             { loggedInUsername && 
               <UserDropdown loggedInUsername={loggedInUsername}
                             setLoggedInUsername={setLoggedInUsername}/>
