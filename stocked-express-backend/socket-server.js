@@ -8,7 +8,7 @@ app.use(express.json())
 app.use(cors())
 
 var bcrypt = require('bcryptjs'); // Hash passwords
-var salt = bcrypt.genSaltSync(2);
+var saltRounds = 10;
 
 // Socket.io is requried for chatting service
 const { Server } = require("socket.io")
@@ -74,24 +74,35 @@ const db = mysql.createConnection({
 app.post("/post_login", async(req, res) => {
   let { username, password } = req.body
 
-  const checkPassword = await bcrypt.compare(password, password.hash); // Check the hash password
-
   console.log("/post_login");
   console.log("Express received: ", req.body) 
-  // Checking if the username and password exists in the database
-  // If the user exists, we return the username. Otherwise, we return a "Logging in Failed" message.
-  db.query("SELECT username FROM users WHERE username = ? AND password = ?", [username, password], (err, result) => {
-    if (result.length == 0) {
+  
+  // Checking if the username and hashed password exists in the database
+  // If the login is correct, we return the username. Otherwise, we return a "Logging in Failed" message.
+  db.query("SELECT username, password FROM users WHERE username = ?", [username], (err, result) => {
+    if (result.length != 1) { // Couldn't even find a username that matched
       console.log(err)
       res.send({
         message: "Incorrect username/password", 
         error: true
       });
     }
-    else {
-      res.send({
-        message: "Successfully logged in", 
-        error: false
+    else { // Found a matching username
+      let hashedPassword = result[0].password;
+
+      bcrypt.compare(password, hashedPassword, function(err, result) {
+        if(result) { // Found matching hashed password!
+          res.send({
+            message: "Successfully logged in", 
+            error: false
+          });
+        } else { // Wrong password
+          console.log(err)
+          res.send({
+            message: "Incorrect username/password", 
+            error: true
+          });
+        }
       });
     }
   })
@@ -103,35 +114,40 @@ app.post("/post_create_account", async(req, res) => {
   console.log("/post_create_account");
   console.log("Express received: ", req.body);
 
-  const hash = await bcrypt.hash(password, salt); // hashes the password to salt 2
-
-  // First check if username exists, can't make account with that name if it does
-  db.query("SELECT username FROM users WHERE username = ?", [username], (err, result) => {
-    if (result.length != 0) { 
-      console.log(err)
-      res.send({
-        message: "Username already exists", 
-        error: true
-      });
-    } else {
-      // Adding the username and password to the database
-      db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], (err, result) => { // ADDS "hash" to the database instead of password
-        if(err) {
+  // Hash password
+  bcrypt.hash(password, saltRounds, function(err, hashedPassword) {
+    if(err) throw err;
+    else {
+      // First check if username exists, can't make account with that name if it does
+      db.query("SELECT username FROM users WHERE username = ?", [username], (err, result) => {
+        if (result.length != 0) { 
           console.log(err)
           res.send({
-            message: "Account creation failed", 
+            message: "Username already exists", 
             error: true
           });
-        }
-        else {
-          res.send({
-            message: "New account created", 
-            error: false
+        } else {
+          // Adding the username and password to the database
+          db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hashedPassword], (err, result) => { // Adds hashedPassword to the database instead of password
+            if(err) {
+              console.log(err)
+              res.send({
+                message: "Account creation failed", 
+                error: true
+              });
+            }
+            else {
+              console.log(`Made new account with username ${username}, unhashed pw ${password}, hashed pw ${hashedPassword}`);
+              res.send({
+                message: "New account created", 
+                error: false
+              });
+            }
           });
         }
       });
     }
-  })
+  });
 })
 
 app.get("/home", cors(), async (req, res) => {
