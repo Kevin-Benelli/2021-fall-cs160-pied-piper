@@ -10,6 +10,7 @@ Dev steps:
 2. In stocked-express-backend directory:
     - npm install
     - npm install -g nodemon
+    - Potentially may need to do npm install cors on its own here
     - nodemon socket-server.js 
 
 3. In stocked-client directory:
