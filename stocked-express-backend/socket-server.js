@@ -7,8 +7,8 @@ app.use(express.urlencoded({ extended: true}))
 app.use(express.json())
 app.use(cors())
 
-
-
+var bcrypt = require('bcryptjs'); // Hash passwords
+var salt = bcrypt.genSaltSync(2);
 
 // Socket.io is requried for chatting service
 const { Server } = require("socket.io")
@@ -74,6 +74,8 @@ const db = mysql.createConnection({
 app.post("/post_login", async(req, res) => {
   let { username, password } = req.body
 
+  const checkPassword = await bcrypt.compare(password, password.hash); // Check the hash password
+
   console.log("/post_login");
   console.log("Express received: ", req.body) 
   // Checking if the username and password exists in the database
@@ -101,6 +103,8 @@ app.post("/post_create_account", async(req, res) => {
   console.log("/post_create_account");
   console.log("Express received: ", req.body);
 
+  const hash = await bcrypt.hash(password, salt); // hashes the password to salt 2
+
   // First check if username exists, can't make account with that name if it does
   db.query("SELECT username FROM users WHERE username = ?", [username], (err, result) => {
     if (result.length != 0) { 
@@ -111,7 +115,7 @@ app.post("/post_create_account", async(req, res) => {
       });
     } else {
       // Adding the username and password to the database
-      db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password], (err, result) => {
+      db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], (err, result) => { // ADDS "hash" to the database instead of password
         if(err) {
           console.log(err)
           res.send({
