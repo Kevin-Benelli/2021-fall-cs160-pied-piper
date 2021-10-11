@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const finnhub = require('finnhub');
 const port = 5000 // localhost 5000
+var bcrypt = require('bcryptjs'); // Hash passwords
 
 //Creating a database and connection
 const mysql = require("mysql");
@@ -23,6 +24,8 @@ app.get("/", cors(), async(req, res) => {
 
 app.post("/post_login", async(req, res) => {
   let { username, password } = req.body
+
+  const checkPassword = await bcrypt.compare(password, password.hash); // Check the hash password
 
   console.log("/post_login");
   console.log("Express received: ", req.body) 
@@ -51,6 +54,8 @@ app.post("/post_create_account", async(req, res) => {
   console.log("/post_create_account");
   console.log("Express received: ", req.body);
 
+  const hash = await bcrypt.hash(password, 2); // hashes the password to salt 2
+
   // First check if username exists, can't make account with that name if it does
   db.query("SELECT username FROM users WHERE username = ?", [username], (err, result) => {
     if (result.length != 0) { 
@@ -61,7 +66,7 @@ app.post("/post_create_account", async(req, res) => {
       });
     } else {
       // Adding the username and password to the database
-      db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password], (err, result) => {
+      db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], (err, result) => { // ADDS "hash" to the database
         if(err) {
           console.log(err)
           res.send({
