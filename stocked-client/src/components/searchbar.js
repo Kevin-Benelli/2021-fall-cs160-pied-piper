@@ -1,21 +1,35 @@
-import React from 'react'
-import { Alignment, Navbar, NavbarGroup } from '@blueprintjs/core';
-import { Button, InputGroup, Intent } from '@blueprintjs/core';
-import './searchbar.css'
+import React, { useState } from 'react'
+import { Button, InputGroup } from '@blueprintjs/core';
+import './searchbar.css';
+
+
 
 export const SearchBar = () => {
+  const [query, setQuery] = useState(""); // init to empty string
+
+  function goToTicker(e) {
+    let url = `/2021-fall-cs160-pied-piper/#/ticker/${query}`;
+    console.log(url)
+    window.open(url, "_self");
+  }
+
+  const searchButton = (
+    <Button
+        icon={"search"}
+        minimal={true}
+        onClick={goToTicker}
+        />
+  );
+
   return (
-    <div className="center">
-      <div className="search">
-        <Navbar className="search-navbar">  
-          <NavbarGroup align={ Alignment.RIGHT }>
-          <InputGroup className="search-bar"
-                    placeholder="Search Bar"
+    <div className="search-bar">
+      <form onSubmit={ goToTicker }>
+        <InputGroup className="search-input"
+                    placeholder="Search"
+                    leftElement={ searchButton }
+                    onChange={(e) => setQuery(e.target.value)}
                     />
-          </NavbarGroup>
-          
-        </Navbar>
-      </div>
+      </form>
     </div>
   )
 } 
