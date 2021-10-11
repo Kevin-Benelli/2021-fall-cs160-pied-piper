@@ -10,7 +10,7 @@ Dev steps:
 2. In stocked-express-backend directory:
     - npm install
     - npm install -g nodemon
-    - nodemon server.js 
+    - nodemon socket-server.js 
 
 3. In stocked-client directory:
     - npm install
@@ -29,7 +29,7 @@ Nodemon will be using localhost:5000
         CREATE TABLE users (
             id INT UNSIGNED NOT NULL AUTO_INCREMENT,
             username VARCHAR(32) NOT NULL,
-            password VARCHAR(32) NOT NULL,
+            password VARCHAR(256) NOT NULL,
             PRIMARY KEY (id));
         ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'rootuser';
         ```
