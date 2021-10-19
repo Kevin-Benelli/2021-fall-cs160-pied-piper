@@ -33,5 +33,24 @@ Nodemon will be using localhost:5000
             password VARCHAR(256) NOT NULL,
             PRIMARY KEY (id));
         ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'rootuser';
+        CREATE TABLE ticker(
+            ticker_symbol VARCHAR(5) NOT NULL,
+            PRIMARY KEY(ticker_symbol)
+        );
+        CREATE TABLE user_ticker(
+            user_id INT UNSIGNED NOT NULL,
+            ticker VARCHAR(5) NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (ticker) REFERENCES ticker(ticker_symbol)
+        );
+        CREATE TABLE chat_message(
+            message_id BIGINT UNSIGNED NOT NULL,
+            message_text VARCHAR(512) NOT NULL,
+            creation_ts DATETIME NOT NULL,
+            ticker VARCHAR(5) NOT NULL,
+            user_id INT UNSIGNED NOT NULL,  
+            FOREIGN KEY (ticker) REFERENCES ticker(ticker_symbol),
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        );
         ```
 
