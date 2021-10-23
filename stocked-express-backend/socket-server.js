@@ -57,6 +57,7 @@ io.on("connection", (socket) =>{
 
 //Creating a database and connection
 const mysql = require("mysql");
+const e = require('express');
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -112,8 +113,20 @@ app.post("/post_create_account", async(req, res) => {
   let { username, password } = req.body;
 
   console.log("/post_create_account");
+  
+  // Adds password restrictions
+  if (password.length < 5 ||
+     !password.match(/[a-z]/g) ||
+     !password.match(/[A-Z]/g) ||
+     !password.match(/[0-9]/g)) {
+      res.send({
+        message: "Password must contain 1 upper and lowercase letter, 1 number, and be longer than 4 characters", 
+        error: true
+      });
+    }
+else {
   console.log("Express received: ", req.body);
-
+  
   // Hash password
   bcrypt.hash(password, saltRounds, function(err, hashedPassword) {
     if(err) throw err;
@@ -148,6 +161,7 @@ app.post("/post_create_account", async(req, res) => {
       });
     }
   });
+}
 })
 
 app.get("/home", cors(), async (req, res) => {
