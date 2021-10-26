@@ -1,6 +1,10 @@
 /*
-    This script creates the database and tables for the Stocked program.
+    This script creates the database and database user for the Stocked program.
+    If the database or user already exists, they will be deleted and recreated. 
 */
+
+DROP DATABASE IF EXISTS stocked;
+DROP USER IF EXISTS 'stocked_user'@'localhost';
 
 CREATE DATABASE stocked;
 

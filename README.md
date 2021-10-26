@@ -24,8 +24,8 @@ Nodemon will be using localhost:5000
 4. A local MySQL server must also be running.
     - Follow the steps on the MySQL documentation to install and start MySQL: https://dev.mysql.com/doc/mysql-getting-started/en/
     - Open a terminal window and change directory to /2021-fall-cs160-pied-piper/stocked-express-backend/
-    - Run the following command with your MySQL user credentials 
+    - Run the following command with your MySQL user credentials. Do not include the asterisks *. 
         ````
-        mysql -u**yourusername** -p**yourpassword**  < db_build.sql
+        mysql -u*yourusername* -p*yourpassword*  < db_build.sql
         ````
     - The database should be successfully built, along with a new user with privileges for the database.
