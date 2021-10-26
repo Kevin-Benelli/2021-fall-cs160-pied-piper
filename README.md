@@ -23,34 +23,9 @@ Nodemon will be using localhost:5000
 
 4. A local MySQL server must also be running.
     - Follow the steps on the MySQL documentation to install and start MySQL: https://dev.mysql.com/doc/mysql-getting-started/en/
-    - In MySQL Workbench, run the following SQL:
-        ```sql
-        CREATE DATABASE stocked;
-        use stocked;
-        CREATE TABLE users (
-            id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            username VARCHAR(32) NOT NULL,
-            password VARCHAR(256) NOT NULL,
-            PRIMARY KEY (id));
-        ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'rootuser';
-        CREATE TABLE ticker(
-            ticker_symbol VARCHAR(5) NOT NULL,
-            PRIMARY KEY(ticker_symbol)
-        );
-        CREATE TABLE user_ticker(
-            user_id INT UNSIGNED NOT NULL,
-            ticker VARCHAR(5) NOT NULL,
-            FOREIGN KEY (user_id) REFERENCES users(id),
-            FOREIGN KEY (ticker) REFERENCES ticker(ticker_symbol)
-        );
-        CREATE TABLE chat_message(
-            message_id BIGINT UNSIGNED NOT NULL,
-            message_text VARCHAR(512) NOT NULL,
-            creation_ts DATETIME NOT NULL,
-            ticker VARCHAR(5) NOT NULL,
-            user_id INT UNSIGNED NOT NULL,  
-            FOREIGN KEY (ticker) REFERENCES ticker(ticker_symbol),
-            FOREIGN KEY (user_id) REFERENCES users(id)
-        );
-        ```
-
+    - Open a terminal window and change directory to /2021-fall-cs160-pied-piper/stocked-express-backend/
+    - Run the following command with your MySQL user credentials. Do not include the asterisks *. 
+        ````
+        mysql -u*yourusername* -p*yourpassword*  < db_build.sql
+        ````
+    - The database should be successfully built, along with a new user with privileges for the database.
