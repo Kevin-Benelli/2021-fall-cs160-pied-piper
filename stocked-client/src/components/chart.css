@@ -1,3 +1,15 @@
 .chart {
   margin: 0 auto;
 }
+
+.chartSettings {
+  max-width: 800px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px; 
+  margin: 0 auto;
+  margin-top: 10px;
+  gap: 10px;
+}
