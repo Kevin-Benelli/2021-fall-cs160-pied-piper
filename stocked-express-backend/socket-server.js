@@ -60,9 +60,9 @@ const mysql = require("mysql");
 const e = require('express');
 const db = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "rootuser",
-  database: "Stocked"
+  user: "stocked_user",
+  password: "verysecretpass",
+  database: "stocked"
 });
 
 
@@ -166,6 +166,68 @@ else {
 
 app.get("/home", cors(), async (req, res) => {
   res.send("This is the data for the home page from Express")
+})
+
+// Returns the specified username if it exists in the database
+app.get("/user/:username", async(req, res) => {
+  let username = req.params['username'];
+
+  const username_query = `SELECT * FROM users WHERE username = ?`;
+  try{
+    db.query(username_query, username, (err, result) => {
+      if (result.length == 0) {
+        res.sendStatus(404);
+      }
+      else{
+        console.log(result);
+        const db_username = result[0].username;
+        res.json({
+            "status": "success",
+            "data": {
+              "username": db_username
+            }
+          }
+        );
+      }
+    });
+  }
+  catch (err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+})
+
+// Returns the watchlist for the specified user
+app.get("/user/:username/watchlist", async(req, res) => {
+  let username = req.params['username'];
+
+  const watchlist_query = `SELECT ticker FROM users INNER JOIN user_ticker ON users.id = user_ticker.user_id WHERE username = ?`;
+  try{
+    db.query(watchlist_query, username, (err, result) => {
+      if (result.length == 0) {
+        res.sendStatus(404);
+      }
+      else{
+        console.log(result);
+        let result_tickers = [];
+        for(let i = 0; i < result.length; i++){
+          result_tickers.push(result[i].ticker);
+        }
+        res.json({
+              "status": "success",
+              "data": {
+                "username": username,
+                "watchlist": result_tickers
+              }
+            }
+        );
+      }
+    });
+  }
+  catch (err){
+    console.log(err);
+    res.sendStatus(500);
+  }
 })
 
 app.get("/chart_data", cors(), async (req, res) => {
