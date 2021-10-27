@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "react-scroll-to-bottom": "^4.2.0"
   }
 }
