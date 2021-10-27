@@ -1,5 +1,5 @@
 import React from 'react'
-
+import "./socketclient.css"
 import { io } from 'socket.io-client'
 import { useState } from 'react'
 import { Chat } from './chat'
@@ -25,15 +25,17 @@ export const SocketClient = () => {
     <div className="center">
       {/* If chat box is not displayed show enter chat room; else show chat box */}
       {!showChatBox ? (
-        <div>
+        <div className="joinChatRoom">
           <h3> Join Stocked Chat Room Now! </h3>
             <input 
+            className="joinChatInputField"
             type="text" 
             placeholder="Enter Name" 
             onChange={(event) => {
               setUsername(event.target.value.toUpperCase());
             }}/>
             <input 
+            className="joinChatInputField"
             type="text" 
             placeholder="Enter Ticker" 
             onChange={(event) => {
@@ -41,7 +43,7 @@ export const SocketClient = () => {
             
             }}/>
             
-            <button onClick={joinRoom}> Join Chat Room </button>        
+            <button className="joinChatRoomButton" onClick={joinRoom}> Join Chat Room </button>        
         </div>
       ) : (
         // Call our chat component and pass in the socket
