@@ -5,6 +5,7 @@ import { Login } from './login';
 import './header.css'
 import { UserDropdown } from './userdropdown';
 import { SearchBar } from './searchbar';
+import { NavLink } from 'react-router-dom';
 
 export const Header = (props) => {
   let { loggedInUsername, setLoggedInUsername } = props;
@@ -14,7 +15,9 @@ export const Header = (props) => {
       <div className="header">
         <Navbar className="header-navbar">
           <NavbarGroup align={ Alignment.LEFT }>
-            <img src={logo} className="header-logo" alt="logo" />
+            <NavLink to="/">
+              <img src={logo} className="header-logo" alt="logo" />
+            </NavLink>
           </NavbarGroup>
 
           <NavbarGroup align={ Alignment.RIGHT }>

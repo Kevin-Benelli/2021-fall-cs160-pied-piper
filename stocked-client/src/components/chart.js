@@ -45,7 +45,7 @@ export const Chart = (props) => {
   let to = Math.floor(now.getTime() / 1000);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/chart_data", { 
+    axios.get("http://localhost:5001/chart_data", { 
       params: {
         resolution: resolution,
         symbol: symbol,
