@@ -7,6 +7,6 @@ const pool = createPool({
     connectionLimit: 10
 })
 
-pool.query(`select * from stockeddb.users`, (err, res) => {
+pool.query(`select * from stocked.users`, (err, res) => {
     return console.log(res)
 })
