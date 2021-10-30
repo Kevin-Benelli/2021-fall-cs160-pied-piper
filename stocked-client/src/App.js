@@ -48,7 +48,7 @@ function App() {
             {/* all routes that look like /ticker/xyz will be handled by the ChartPage component */}
             <Route path="/" children={homePage} />
             <Route path="/ticker/:ticker" children={<ChartPage/>} />
-            <Route path="/settings" children={<SettingsPage />}/>
+            <Route path="/settings" children={<SettingsPage loggedInUsername={loggedInUsername} setLoggedInUsername={setLoggedInUsername}/>}/>
             <Route path="/chat" children={<SocketClient />}/>
 
             {/* <Route path="/news/:ticker" component={<NewsPage} /> */}

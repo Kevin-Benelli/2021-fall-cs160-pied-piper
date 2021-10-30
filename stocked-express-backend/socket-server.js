@@ -133,7 +133,7 @@ else {
     else {
       // First check if username exists, can't make account with that name if it does
       db.query("SELECT username FROM users WHERE username = ?", [username], (err, result) => {
-        if (result.length != 0) { 
+        if(result && result.length != 0) { 
           console.log(err)
           res.send({
             message: "Username already exists", 
@@ -162,6 +162,95 @@ else {
     }
   });
 }
+})
+
+
+// Expects an object with attributes username and an object full of fields to update (username, password, etc.)
+// To do: should we make it so if one field fails none of the other update?
+app.post("/post_update_account", async(req, res) => {
+  let { usernameToUpdate, newValues } = req.body;
+
+  let {username, password} = newValues;
+
+  let response = {
+    message: '',
+    error: false,
+}
+
+  console.log("/post_update_account");
+  
+  console.log("Express received: ", req.body);
+  
+  if(username){
+    // First check if username exists, can't make account with that name if it does
+    db.query("SELECT username FROM users WHERE username = ?", [usernameToUpdate], (err, result) => {
+      if(result && result.length == 0) { 
+        console.log(err)
+        response = {
+          message: "Username doesn't exist.", 
+          error: true
+        };
+      } else {
+        // Updating the username in the database
+        db.query("UPDATE users set username=? WHERE username=?", [username, usernameToUpdate], (err, result) => { // 
+          if(err) {
+            console.log(err)
+            response = {
+              message: "Username update failed.", 
+              error: true
+            };
+          }
+          else {
+            console.log(`Updated account ${usernameToUpdate} to username ${username}`);
+            response = {
+              message: "Account username updated.", 
+              error: false
+            };
+          }
+        }); 
+      }
+    });
+  }
+  if(password && !response.error) {
+    // Adds password restrictions
+    if (password.length < 5 ||
+      !password.match(/[a-z]/g) ||
+      !password.match(/[A-Z]/g) ||
+      !password.match(/[0-9]/g)) {
+       response = {
+         message: response.message + " Password must contain 1 upper and lowercase letter, 1 number, and be longer than 4 characters", 
+         error: true
+       };
+     }
+ else {
+   console.log("Express received: ", req.body);
+   
+   // Hash password
+   bcrypt.hash(password, saltRounds, function(err, hashedPassword) {
+     if(err) throw err;
+     else {
+        // Updating the username in the database
+        db.query("UPDATE users set password=? WHERE username=?", [hashedPassword, usernameToUpdate], (err, result) => { // 
+          if(err) {
+            console.log(err)
+            response = {
+              message: response.message + " Password update failed", 
+              error: true
+            };
+          }
+          else {
+            console.log(`Updated password of ${usernameToUpdate} to password ${password}`);
+            response = {
+              message: response.message + " Account password updated", 
+              error: false
+            };
+          }
+        }); 
+     }
+  })
+ }
+}
+res.send(response)
 })
 
 app.get("/home", cors(), async (req, res) => {
