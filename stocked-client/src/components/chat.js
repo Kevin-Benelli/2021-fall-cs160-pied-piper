@@ -1,11 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-
-
+import ScrollToBottom from 'react-scroll-to-bottom';
 export const Chat = ({socket, username, chatroom}) => {
     const [userMessage, setUserMessage] = useState("");
     const [messageLog, setMessageLog] = useState([]);
-
 
     const resetInputField = () => {
       setUserMessage("");
@@ -53,38 +51,40 @@ export const Chat = ({socket, username, chatroom}) => {
     return( 
     
     <div> 
-      <div className="chat-room-header"> 
+      <div className="chat-room-window"> 
+      <div className="chat-room-header-title">
         <p> Live Chat Room for { chatroom.toUpperCase() } </p>
       </div>
       
       
       <div className="chat-room-body"> 
-        {
-          // for each element in message list return <h1> message </h1>
-          messageLog.map((messageContent) => {
-            return (
+        <ScrollToBottom className="message-container">
+          { 
+            // for each element in message list return <h1> message </h1>
+            messageLog.map((messageContent) => {
+              return (
 
-              // access ids: user-self and user-other to sytle the user respectivley. 
-              // user-self should be left centered and user-other should be on right
-              <div className="message" id={username === messageContent.author ? "user-self" : "user-other"}> 
-              <div>
-                <div className="message-content">
-                  <p>{messageContent.message}</p>
+                // access ids: user-self and user-other to sytle the user respectivley. 
+                // user-self should be left centered and user-other should be on right
+                <div className="message" 
+                id={username === messageContent.author ? "user-self" : "user-other"}> 
+                <div>
+                  <div className="message-content">
+                    <p>{messageContent.message}</p>
+                  </div>
+                  <div className="message-meta">
+                    <p id="sender_and_time">{messageContent.author} Sent: {messageContent.time}</p>
+                  </div>
+                  </div>
                 </div>
-                <div className="message-meta">
-                  <p id="sender_time">{messageContent.author} Sent: {messageContent.time}</p>
-                </div>
-                
-                </div>
-              </div>
-            );
-          })}
-
+                );
+              })
+            }
+         </ScrollToBottom>
       </div>
-      
-      
       <div className="chat-room-footer">
         <input 
+        className="chat-room-footer-message-field"
         type="text" 
         placeholder="Lets Talk Stocks..."
         onChange={(event) => {
@@ -99,7 +99,7 @@ export const Chat = ({socket, username, chatroom}) => {
         {/*  &#9658; is a message send icon button */}
       </div>
     </div>
-    
-    )
+    </div>
+    );
   
 } 

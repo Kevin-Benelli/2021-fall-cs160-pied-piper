@@ -60,8 +60,8 @@ const mysql = require("mysql");
 const e = require('express');
 const db = mysql.createConnection({
   host: "localhost",
-  user: "stocked_user",
-  password: "verysecretpass",
+  user: "root",
+  password: "rootuser",
   database: "stocked"
 });
 

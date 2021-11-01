@@ -18,7 +18,7 @@ function App() {
   const [homePage, setHomePage] = useState("")
 
   useEffect(() => {
-    axios.get("http://localhost:5000/home").then((response) => {
+    axios.get("http://localhost:5001/home").then((response) => {
       setHomePage(response.data)
     })
   }, []);
@@ -28,24 +28,25 @@ function App() {
   return (
     
       <div className="center">
-      <div className="App">
-        <Header loggedInUsername={loggedInUsername}
-                setLoggedInUsername={setLoggedInUsername}/>
-        {homePage}
-        { loggedInUsername && 
-          <div>
-            This div shows when a user is logged in.
-          </div>
-        }
-        { !loggedInUsername && 
-          <div>
-            This div shows when there's no logged in user.
-          </div>
-        }
-        
+        <div className="App">
           <HashRouter basename="/2021-fall-cs160-pied-piper">
+            <Header loggedInUsername={loggedInUsername}
+                    setLoggedInUsername={setLoggedInUsername}/>
+            { loggedInUsername && 
+              <div>
+                This div shows when a user is logged in.
+              </div>
+            }
+            { !loggedInUsername && 
+              <div>
+                This div shows when there's no logged in user.
+              </div>
+            }
+        
+          
 
             {/* all routes that look like /ticker/xyz will be handled by the ChartPage component */}
+            <Route path="/" children={homePage} />
             <Route path="/ticker/:ticker" children={<ChartPage/>} />
             <Route path="/settings" children={<SettingsPage />}/>
             <Route path="/chat" children={<SocketClient />}/>
