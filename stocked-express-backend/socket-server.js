@@ -238,6 +238,7 @@ app.post("/ticker/:ticker_symbol/messages", async(req, res) => {
   const get_user_id_query = `SELECT id FROM users WHERE username = ?`;
   const ticker_message_query = `INSERT INTO chat_message (message_text, ticker, user_id) VALUES (?, ?, ?)`;
   try{
+    // We need to first find the user id number based on the username
     db.query(get_user_id_query, username, (err, result) => {
       if (result.length == 0) {
         res.sendStatus(404);
@@ -246,6 +247,7 @@ app.post("/ticker/:ticker_symbol/messages", async(req, res) => {
         user_id = result[0].id;
         try{
           console.log("message:" +  message + " ticker_symbol: " + ticker_symbol + "user_id: " + user_id);
+          // Add the chat message to the table
           db.query(ticker_message_query, [message, ticker_symbol, user_id] , (err, result) => {
             if (result.length == 0) {
               res.sendStatus(404);
@@ -261,7 +263,6 @@ app.post("/ticker/:ticker_symbol/messages", async(req, res) => {
           });
         }
         catch (err){
-          console.log("Something went really wrong");
           console.log(err);
           res.sendStatus(500);
         }
