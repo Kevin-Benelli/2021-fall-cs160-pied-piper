@@ -32,11 +32,12 @@ CREATE TABLE user_ticker(
 );
 
 CREATE TABLE chat_message(
-    message_id BIGINT UNSIGNED NOT NULL,
+    message_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     message_text VARCHAR(512) NOT NULL,
     creation_ts DATETIME NOT NULL,
     ticker VARCHAR(5) NOT NULL,
     user_id INT UNSIGNED NOT NULL,  
+    PRIMARY KEY (message_id),
     FOREIGN KEY (ticker) REFERENCES ticker(ticker_symbol),
     FOREIGN KEY (user_id) REFERENCES users(id)
 );

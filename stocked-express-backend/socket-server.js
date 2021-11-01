@@ -230,6 +230,76 @@ app.get("/user/:username/watchlist", async(req, res) => {
   }
 })
 
+app.post("/ticker/:ticker_symbol/messages", async(req, res) => {
+  let ticker_symbol = req.params['ticker_symbol'];
+  let {username, message} = req.body;
+
+  let user_id;
+  const get_user_id_query = `SELECT id FROM users WHERE username = ?`;
+  const ticker_message_query = `INSERT INTO chat_message (message_text, ticker, user_id) VALUES (?, ?, ?)`;
+  try{
+    db.query(get_user_id_query, username, (err, result) => {
+      if (result.length == 0) {
+        res.sendStatus(404);
+      }
+      else{
+        user_id = result[0].id;
+        try{
+          console.log("message:" +  message + " ticker_symbol: " + ticker_symbol + "user_id: " + user_id);
+          db.query(ticker_message_query, [message, ticker_symbol, user_id] , (err, result) => {
+            if (result.length == 0) {
+              res.sendStatus(404);
+            }
+            else{
+              res.json({
+                "status": "success",
+                "data": {
+                  "message": "Successfully added a message to " + ticker_symbol + " chat from " + username,
+                }
+              });
+            }
+          });
+        }
+        catch (err){
+          console.log("Something went really wrong");
+          console.log(err);
+          res.sendStatus(500);
+        }
+      }
+    });
+  }
+  catch (err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+})
+
+app.post("/ticker/add-ticker", async(req, res) => {
+  let {ticker_symbol} = req.body;
+
+  const ticker_message_query = `INSERT INTO ticker (ticker_symbol) VALUES (?)`;
+  try{
+    db.query(ticker_message_query, ticker_symbol, (err, result) => {
+      if (result.length == 0) {
+        res.sendStatus(404);
+      }
+      else{
+        res.json({
+          "status": "success",
+          "data": {
+            "message": "Successfully created a ticker " + ticker_symbol,
+          }
+        });
+      }
+    });
+  }
+  catch (err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+
+})
+
 app.get("/chart_data", cors(), async (req, res) => {
   console.log("/chart_data");
   console.log("Got request");
