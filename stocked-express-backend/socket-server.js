@@ -230,6 +230,7 @@ app.get("/user/:username/watchlist", async(req, res) => {
   }
 })
 
+// Saves a user's message for a particular ticker chat in the database
 app.post("/ticker/:ticker_symbol/messages", async(req, res) => {
   let ticker_symbol = req.params['ticker_symbol'];
   let {username, message} = req.body;
@@ -241,13 +242,13 @@ app.post("/ticker/:ticker_symbol/messages", async(req, res) => {
     // We need to first find the user id number based on the username
     db.query(get_user_id_query, username, (err, result) => {
       if (result.length == 0) {
+        // The user does not exist
         res.sendStatus(404);
       }
       else{
         user_id = result[0].id;
         try{
-          console.log("message:" +  message + " ticker_symbol: " + ticker_symbol + "user_id: " + user_id);
-          // Add the chat message to the table
+          // Add the chat message to the database
           db.query(ticker_message_query, [message, ticker_symbol, user_id] , (err, result) => {
             if (result.length == 0) {
               res.sendStatus(404);
@@ -275,6 +276,8 @@ app.post("/ticker/:ticker_symbol/messages", async(req, res) => {
   }
 })
 
+// Add a ticker to the database
+// The ticker cannot already exist in the database
 app.post("/ticker/add-ticker", async(req, res) => {
   let {ticker_symbol} = req.body;
 
