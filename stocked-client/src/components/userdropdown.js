@@ -16,12 +16,20 @@ export const UserDropdown = (props) => {
     setLoggedInUsername(null);
   }
 
+  function lightModeToggle() {
+    var element = document.body;
+    element.classList.toggle("light-mode");
+  }
 
   let dropdown = (
+    
     <div className="userdropdown center">
 
       <HashRouter basename="/">
 
+      <Button className="toggle" // Creates the toggle button for light mode
+                onClick={ lightModeToggle }> Light Mode Toggle </Button><br/>
+                
       { /* Creates the settings button and goes back home */ }
       <NavLink to = {'/'}>
         <Button>Home</Button><br/>
