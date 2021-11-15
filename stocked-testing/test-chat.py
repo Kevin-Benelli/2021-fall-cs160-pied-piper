@@ -7,20 +7,20 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains 
 
+chat_header_locator = "//h3[contains(text(), 'Join Stocked Chat Room Now!')]"
+chat_join_room_name_locator = "//input[contains(@placeholder, 'Enter Name')]"
+chat_join_room_ticker_locator = "//input[contains(@placeholder, 'Enter Ticker')]"
+chat_join_room_button_locator = "//button[contains(@class, 'joinChatRoomButton')]"
+
 def verify_chat_header_text():
-    chat_header_locator = "//h3[contains(text(), 'Join Stocked Chat Room Now!')]"
     try:
         chat_header_field = driver.find_element(By.XPATH, chat_header_locator)
         print(chat_header_field.text)
         return chat_header_field.text
     except NoSuchElementException:
         return False
-        
-def verify_chat_join_room_fields_exist():
 
-    chat_join_room_name_locator = "//input[contains(@placeholder, 'Enter Name')]"
-    chat_join_room_ticker_locator = "//input[contains(@placeholder, 'Enter Ticker')]"
-    
+def verify_chat_join_room_fields_exist():
     try:
         driver.find_element(By.XPATH, chat_join_room_name_locator)
         driver.find_element(By.XPATH, chat_join_room_ticker_locator)
@@ -32,7 +32,6 @@ def verify_chat_join_room_fields_exist():
 
 
 def verify_chat_join_room_button_text():
-    chat_join_room_button_locator = "//button[contains(@class, 'joinChatRoomButton')]"
     try:
         join_room_button_text = driver.find_element(By.XPATH, chat_join_room_button_locator)
         print(join_room_button_text.text)
@@ -41,6 +40,8 @@ def verify_chat_join_room_button_text():
         return False
     
 
+def verify_open_chat():
+    pass    
 
 def main():
  
