@@ -48,7 +48,7 @@ def main():
     search_input_field.send_keys("TSLA")
 
     search_button = driver.find_element_by_xpath(search_button_locator)
-    search_button.click()
+    search_button.click() 
 
     
 

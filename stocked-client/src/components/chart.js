@@ -120,20 +120,20 @@ export const Chart = (props) => {
                                     timePrecision={TimePrecision.SECOND}
                                     />
                       }>
-                <Button text={ dateForm.format(from * 1000) }/>
+                <Button className="chart-from-button" text={ dateForm.format(from * 1000) }/>
             </Popover2>
           </Label>
           <Label>
             To:
             <Popover2 placement="top"
                       content={
-                        <DatePicker className="chart-from-datepicker"
+                        <DatePicker className="chart-to-datepicker"
                                     onChange={handleToChange}
                                     timePickerProps={timePickerProps}
                                     timePrecision={TimePrecision.SECOND}
                                     />
                       }>
-                <Button text={ dateForm.format(to * 1000) }/>
+                <Button className="chart-to-button" text={ dateForm.format(to * 1000) }/>
             </Popover2>
           </Label>
           <Label>
