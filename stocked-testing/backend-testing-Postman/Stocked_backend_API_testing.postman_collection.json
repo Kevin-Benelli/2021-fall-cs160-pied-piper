@@ -1,0 +1,331 @@
+{
+	"info": {
+		"_postman_id": "e89f0cca-7493-41a9-b3d7-c14c61d7050c",
+		"name": "Stocked APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user_exists",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{stocked}}/user/pumpkinpie",
+					"host": [
+						"{{stocked}}"
+					],
+					"path": [
+						"user",
+						"pumpkinpie"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "user_exists",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{stocked}}/user/toast",
+							"host": [
+								"{{stocked}}"
+							],
+							"path": [
+								"user",
+								"toast"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "48"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"30-g8bee/S1t6N9EKBDBnR6CoBKghI\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 17 Nov 2021 03:27:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"username\": \"toast\"\n    }\n}"
+				},
+				{
+					"name": "user_does_not_exist",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{stocked}}/user/pumpkinpie",
+							"host": [
+								"{{stocked}}"
+							],
+							"path": [
+								"user",
+								"pumpkinpie"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "9"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"9-0gXL1ngzMqISxa6S1zx3F4wtLyg\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 17 Nov 2021 03:31:21 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "Not Found"
+				}
+			]
+		},
+		{
+			"name": "user_watchlist",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{stocked}}/user/donut/watchlist",
+					"host": [
+						"{{stocked}}"
+					],
+					"path": [
+						"user",
+						"donut",
+						"watchlist"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "user_watchlist_multiple_tickers",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{stocked}}/user/toast/watchlist",
+							"host": [
+								"{{stocked}}"
+							],
+							"path": [
+								"user",
+								"toast",
+								"watchlist"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "76"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4c-RyhSVGCVYmntKc/9DV8Gu9k968k\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 17 Nov 2021 03:47:37 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"username\": \"toast\",\n        \"watchlist\": [\n            \"AAPL\",\n            \"MSFT\"\n        ]\n    }\n}"
+				},
+				{
+					"name": "user_watchlist_empty",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{stocked}}/user/pizza/watchlist",
+							"host": [
+								"{{stocked}}"
+							],
+							"path": [
+								"user",
+								"pizza",
+								"watchlist"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "9"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"9-0gXL1ngzMqISxa6S1zx3F4wtLyg\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 17 Nov 2021 03:34:45 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "Not Found"
+				},
+				{
+					"name": "user_watchlist_one_ticker",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{stocked}}/user/donut/watchlist",
+							"host": [
+								"{{stocked}}"
+							],
+							"path": [
+								"user",
+								"donut",
+								"watchlist"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "68"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"44-aHdO92OOyazsku2+EuEu8tunavc\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 17 Nov 2021 03:48:44 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"username\": \"donut\",\n        \"watchlist\": [\n            \"AMC\"\n        ]\n    }\n}"
+				}
+			]
+		}
+	]
+}
