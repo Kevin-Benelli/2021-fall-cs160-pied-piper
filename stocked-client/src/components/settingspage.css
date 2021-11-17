@@ -6,17 +6,25 @@
     margin-bottom: 1rem;
 }
 
-.accountInputField {
-    width: 60%;
-    height: 4vh !important;
-    padding: 10px 40px !important;
-    border-radius: 30px;
+.settingsBody .username {
+    width: 40% !important;
+    height: 4vh;
+    padding: 30px 40px;
+    border-radius: 40px !important;
+    margin: auto;
+}
+
+.settingsBody .password {
+    width: 40% !important;
+    height: 4vh;
+    padding: 30px 40px;
+    border-radius: 40px !important;
     margin: auto;
 }
 
 .accountSubmitButton {
-    height: 6vh;
-    margin: 5px;
+    height: 5vh;
+    margin: 30px;
     border-radius: 30px;
     padding: 20px 40px;
     font-size: 20px;
@@ -24,4 +32,8 @@
     color: rgb(255, 255, 255) !important;
     cursor: pointer;
     border: none;
+}
+
+.lock {
+    vertical-align: bottom !important;
 }
