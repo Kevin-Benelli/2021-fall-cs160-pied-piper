@@ -13,6 +13,7 @@ export const SettingsPage = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState(null); // init to empty string
   const [errorMsg, setErrorMsg] = useState(null); // init to empty string
+  const ENDPOINT = `http://localhost:5001/post_update_account` 
 
   async function updateSettings(e){
     e.preventDefault() // don't refresh form on submit
@@ -21,7 +22,7 @@ export const SettingsPage = (props) => {
         username: newUsername,
         password: password,
         } 
-        axios.post(`http://localhost:5001/post_update_account`, {
+        axios.post(ENDPOINT, {
           usernameToUpdate: loggedInUsername,
           newValues: newValues,
         }).then((response) => {
@@ -40,21 +41,21 @@ export const SettingsPage = (props) => {
   }
 
   return (
-    <div className="settings">
+    <div className="settingsBody">
       <h1>Account Info</h1>
       <form> 
-        <InputGroup className="username"
+        <InputGroup className="accountInputField"
                     placeholder="Username"
                     onChange={(e) => setNewUsername(e.target.value)}
                     defaultValue={loggedInUsername}
                     
                     />
-        <InputGroup className="password"
+        <InputGroup className="accountInputField"
                     placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
                     type={showPassword ? "text" : "password"}
                     />
-        <Button className="update-account-submit"
+        <Button className="accountSubmitButton"
                 onClick={ e => {
                   updateSettings(e);
                 }}> Update Info </Button>
