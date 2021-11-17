@@ -15,6 +15,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains 
 
+# Chart behavior verification
+secondsToWaitIfElementIsNotFound = 3
+
 def verify_chart_exists():
     try:
         chart = driver.find_element(By.CSS_SELECTOR, ".chart")
@@ -24,7 +27,6 @@ def verify_chart_exists():
 
 def verify_from_datetime_selector():
     try:
-        secondsToWaitIfElementIsNotFound = 3
         chart_from_button = WebDriverWait(driver, secondsToWaitIfElementIsNotFound).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, ".chart-from-button")))
         chart_from_button.click()
@@ -44,7 +46,6 @@ def verify_from_datetime_selector():
 
 def verify_to_datetime_selector():
     try:
-        secondsToWaitIfElementIsNotFound = 30
         chart_to_button = driver.find_element(By.CSS_SELECTOR, ".chart-to-button")
         chart_to_button.click()
         to_dates = driver.find_elements(By.CSS_SELECTOR, ".DayPicker-Day")
@@ -67,7 +68,7 @@ def verify_to_datetime_selector():
 
 def verify_resolution_picker():
     try:
-      resolution_picker = driver.find_element(By.CSS_SELECTOR, ".chart-resolution-select")
+      resolution_picker = WebDriverWait(driver, secondsToWaitIfElementIsNotFound).until(EC.presence_of_element_located((By.CSS_SELECTOR, ".chart-resolution-select")))
       resolution_picker.click()
       resolution_option = driver.find_element(By.CSS_SELECTOR, ".chart-resolution-select option[value='60']")
       resolution_option.click()
@@ -77,6 +78,18 @@ def verify_resolution_picker():
 
     return verify_chart_exists()
 
+  
+# UI Text verification
+def verify_label(className):
+    try:
+      full_label = WebDriverWait(driver, secondsToWaitIfElementIsNotFound).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, className))).text
+      parsed_label = full_label[:full_label.index("\n")] # Substring out the button bit which can change depending on what the user has selected
+      return parsed_label
+
+    except NoSuchElementException:
+        return False
+
 def main():
  
     global driver
@@ -85,9 +98,22 @@ def main():
 
     driver = webdriver.Chrome()
     driver.get(url)    
-   
+
+    # Verify UI text
+    # Expected UI text
+    expected_from_label = "From:"
+    expected_to_label = "To:"
+    expected_res_label = "Resolution:"
+    res = verify_label(".fromLabel")
+    print(res)
+    assert verify_label(".fromLabel") == expected_from_label
+    assert verify_label(".toLabel") == expected_to_label
+    assert verify_label(".resLabel") == expected_res_label
+
+
+    # Verify chart behavior
     assert verify_chart_exists() == True
-    
+
     # Test opening from and to datetime selectors and making a selection
     # Expected result: first date to the last date in the date picker popups selected, 9:00 AM to 5:00 PM. Chart still exists.
     assert verify_from_datetime_selector() == True

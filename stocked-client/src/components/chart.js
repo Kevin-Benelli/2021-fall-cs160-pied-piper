@@ -110,7 +110,7 @@ export const Chart = (props) => {
       {loaded && error === null && (
         <div className="chartSettings">
           { /* Inputs that change resolution, from, and to dates */ }
-          <Label>
+          <Label className="fromLabel">
             From:
             <Popover2 placement="top"
                       content={
@@ -123,7 +123,7 @@ export const Chart = (props) => {
                 <Button className="chart-from-button" text={ dateForm.format(from * 1000) }/>
             </Popover2>
           </Label>
-          <Label>
+          <Label className="toLabel">
             To:
             <Popover2 placement="top"
                       content={
@@ -136,7 +136,7 @@ export const Chart = (props) => {
                 <Button className="chart-to-button" text={ dateForm.format(to * 1000) }/>
             </Popover2>
           </Label>
-          <Label>
+          <Label className="resLabel">
             Resolution: { /* Either "1", "5", "15", "30", "60", "D", "W", "M" */ }
             <div className="bp3-html-select chart-resolution">
               <select className="chart-resolution-select"
