@@ -24,6 +24,7 @@
 
 .password .bp3-input-action {
     top: auto !important;
+    padding-top: 3px;
 }
 
 .accountSubmitButton {
