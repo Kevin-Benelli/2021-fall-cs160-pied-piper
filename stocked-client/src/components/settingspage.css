@@ -20,3 +20,30 @@
     height: 30px;
     width: 500px;
 }
+
+.username {
+    height: 30px;
+    width: 500px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.password {
+    height: 30px;
+    width: 500px;
+    margin: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.update-account-submit {
+    height: 30px;
+    width: 200px;
+    margin: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}

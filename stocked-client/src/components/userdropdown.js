@@ -50,7 +50,6 @@ export const UserDropdown = (props) => {
 
       <Button className="logout" // Creates the logout button
                 onClick={ logout }> Logout </Button><br/>
-      To be continued
       </HashRouter>
     </div>
   );
