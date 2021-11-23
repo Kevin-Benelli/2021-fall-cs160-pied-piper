@@ -1,4 +1,11 @@
 .userdropdown {
   padding: 10px;
+  left:0;
+  width:100%;
+  background-color: #6a6f80;
 }
 
+button {
+  width: 100%;
+  margin: 3px; 
+}
