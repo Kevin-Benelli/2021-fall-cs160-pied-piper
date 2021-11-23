@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/2021-fall-cs160-pied-piper/static/css/main.523d67e0.chunk.css",
+    "main.css": "/2021-fall-cs160-pied-piper/static/css/main.6ed31456.chunk.css",
     "main.js": "/2021-fall-cs160-pied-piper/static/js/main.08be0010.chunk.js",
     "main.js.map": "/2021-fall-cs160-pied-piper/static/js/main.08be0010.chunk.js.map",
     "runtime-main.js": "/2021-fall-cs160-pied-piper/static/js/runtime-main.c486396f.js",
@@ -12,7 +12,7 @@
     "static/js/3.abf89065.chunk.js.map": "/2021-fall-cs160-pied-piper/static/js/3.abf89065.chunk.js.map",
     "index.html": "/2021-fall-cs160-pied-piper/index.html",
     "static/css/2.22367306.chunk.css.map": "/2021-fall-cs160-pied-piper/static/css/2.22367306.chunk.css.map",
-    "static/css/main.523d67e0.chunk.css.map": "/2021-fall-cs160-pied-piper/static/css/main.523d67e0.chunk.css.map",
+    "static/css/main.6ed31456.chunk.css.map": "/2021-fall-cs160-pied-piper/static/css/main.6ed31456.chunk.css.map",
     "static/js/2.6e8103b4.chunk.js.LICENSE.txt": "/2021-fall-cs160-pied-piper/static/js/2.6e8103b4.chunk.js.LICENSE.txt",
     "static/media/blueprint-icons.css": "/2021-fall-cs160-pied-piper/static/media/icons-20.cde033c5.eot",
     "static/media/loading.60616635.gif": "/2021-fall-cs160-pied-piper/static/media/loading.60616635.gif",
@@ -22,7 +22,7 @@
     "static/js/runtime-main.c486396f.js",
     "static/css/2.22367306.chunk.css",
     "static/js/2.6e8103b4.chunk.js",
-    "static/css/main.523d67e0.chunk.css",
+    "static/css/main.6ed31456.chunk.css",
     "static/js/main.08be0010.chunk.js"
   ]
 }
