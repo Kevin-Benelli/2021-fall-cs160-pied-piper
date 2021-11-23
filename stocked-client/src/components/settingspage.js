@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import { Button, Colors, InputGroup, Intent } from '@blueprintjs/core';
-import { Alignment, Navbar, NavbarGroup } from '@blueprintjs/core';
+import { Tooltip2 } from '@blueprintjs/popover2';
 import axios from 'axios'
 import './settingspage.css'
 
@@ -9,55 +9,103 @@ import './settingspage.css'
 export const SettingsPage = (props) => {
   
   let {loggedInUsername, setLoggedInUsername } = props; 
-  const [newUsername, setNewUsername] = useState(null);
+  const [newUsername, setNewUsername] = useState(loggedInUsername);
   const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState(null); // init to empty string
+  const [newPassword, setNewPassword] = useState(null); // init to empty string
   const [errorMsg, setErrorMsg] = useState(null); // init to empty string
+  const USERNAME_ENDPOINT = `http://localhost:5001/update_username` 
+  const PASSWORD_ENDPOINT = `http://localhost:5001/update_password` 
 
-  async function updateSettings(e){
-    e.preventDefault() // don't refresh form on submit
+
+  
+  // Post username then password to express backend if updated
+  function updateSettings(e){
+    e.preventDefault() // Don't refresh form on submit
+    updateUsername().then(() => updatePassword())   // Use .then() to ensure that username updates before password
+  }
+  
+  async function updateUsername() {
     try{
-      let newValues = {
-        username: newUsername,
-        password: password,
-        } 
-        axios.post(`http://localhost:5001/post_update_account`, {
-          usernameToUpdate: loggedInUsername,
-          newValues: newValues,
-        }).then((response) => {
-            // response.data holds a message string and an error boolean
-            if(response.data.error) {
-              setErrorMsg(response.data.message);
-            } else {
-              setErrorMsg(null);
-              if(newValues.username)
-                setLoggedInUsername(newUsername)
-            }
-        });
-    }catch(error){
-        console.log('Yo something went wrong: %s', error)
+      axios.post(USERNAME_ENDPOINT, {
+        loggedInUsername,
+        newUsername,
+      }).then((response) => {
+          // response.data holds a message string and an error boolean
+          if(response.data.error) {
+            setErrorMsg(response.data.message)
+          } else {
+            setLoggedInUsername(newUsername)
+            setErrorMsg(null);
+          }
+      });
+    } catch(error){
+        console.log('Yo something went wrong with the name: %s', error)
+    }
+  }
+  
+ async function updatePassword() {
+    //Try to post password
+    try{
+      axios.post(PASSWORD_ENDPOINT, {
+        newUsername,
+        newPassword,
+      }).then((response) => {
+          // response.data holds a message string and an error boolean
+          if(response.data.error) {
+            setErrorMsg(response.data.message);
+          } else {
+            setErrorMsg(null);
+          }
+      });
+  } catch(error){
+      console.log('Yo something went wrong with the password: %s', error)
     }
   }
 
+  
+
+  // Functions for lock icon next to password field
+  function handleLockClick() {
+    setShowPassword(!showPassword);
+  }
+
+  const lockButton = (
+    <Tooltip2 content={`${showPassword ? "Hide" : "Show"} Password`}
+              placement="right"
+              >
+        <Button
+            className="lock"
+            icon={showPassword ? "unlock" : "lock"}
+            intent={Intent.WARNING}
+            minimal={true}
+            onClick={handleLockClick}
+            />
+    </Tooltip2>
+);
+
+
+
   return (
-    <div className="settings">
+    <div className="settingsBody">
       <h1>Account Info</h1>
       <form> 
         <InputGroup className="username"
                     placeholder="Username"
-                    onChange={(e) => setNewUsername(e.target.value)}
+                    onChange={(e) => 
+                      setNewUsername(e.target.value)}
                     defaultValue={loggedInUsername}
                     
                     />
         <InputGroup className="password"
                     placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)}
+                    rightElement={lockButton}
+                    onChange={(e) => setNewPassword(e.target.value)}
                     type={showPassword ? "text" : "password"}
                     />
-        <Button className="update-account-submit"
+        <Button className="accountSubmitButton"
                 onClick={ e => {
                   updateSettings(e);
-                }}> Update Info </Button>
+                }}> Update Account </Button>
         <div style={{
           color: Colors.RED1,
           marginTop: "5px"

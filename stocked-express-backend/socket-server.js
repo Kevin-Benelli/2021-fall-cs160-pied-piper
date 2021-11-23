@@ -66,6 +66,15 @@ const db = mysql.createConnection({
 });
 
 
+// Password requirements for account creation and password update
+function password_invalid(password) {
+  if(password.length < 5 ||
+     !password.match(/[a-z]/g) ||
+     !password.match(/[A-Z]/g) ||
+     !password.match(/[0-9]/g))
+     return true;
+  return false;
+}
 
 
 // server.get("/", cors(), async(req, res) => {
@@ -115,10 +124,7 @@ app.post("/post_create_account", async(req, res) => {
   console.log("/post_create_account");
   
   // Adds password restrictions
-  if (password.length < 5 ||
-     !password.match(/[a-z]/g) ||
-     !password.match(/[A-Z]/g) ||
-     !password.match(/[0-9]/g)) {
+  if (password_invalid(password)) {
       res.send({
         message: "Password must contain 1 upper and lowercase letter, 1 number, and be longer than 4 characters", 
         error: true
@@ -165,97 +171,95 @@ else {
 })
 
 
-// Expects an object with attributes username and an object full of fields to update (username, password, etc.)
-// To do: should we make it so if one field fails none of the other update?
-app.post("/post_update_account", async(req, res) => {
-  let { usernameToUpdate, newValues } = req.body;
+// update_username:
+// Expects an object with attributes currentUsername and newUsername
+app.post("/update_username", async(req, res) => {
+  let { loggedInUsername, newUsername } = req.body;
 
-  let {username, password} = newValues;
-
-  let response = {
-    message: '',
-    error: false,
-}
-
-  console.log("/post_update_account");
-  
+  console.log("/update_username");
   console.log("Express received: ", req.body);
-  
-  if(username){
-    // First check if username exists, can't make account with that name if it does
-    db.query("SELECT username FROM users WHERE username = ?", [usernameToUpdate], (err, result) => {
-      if(result && result.length == 0) { 
-        console.log(err)
-        response = {
-          message: "Username doesn't exist.", 
+
+  // Check if newUsername is non-null, if null then don't update
+  if(newUsername) {
+    db.query("SELECT username FROM users WHERE username = ?", [newUsername], (err, result) => {
+      if(result && result.length != 0) { 
+        res.send({
+          message: "New username exists already in database.", 
           error: true
-        };
+        });
       } else {
-        // Updating the username in the database
-        db.query("UPDATE users set username=? WHERE username=?", [username, usernameToUpdate], (err, result) => { // 
+        db.query("UPDATE users SET username=? WHERE username=?", [newUsername, loggedInUsername], (err, result) => { 
           if(err) {
             console.log(err)
-            response = {
+            res.send({
               message: "Username update failed.", 
               error: true
-            };
+            });
           }
           else {
-            console.log(`Updated account ${usernameToUpdate} to username ${username}`);
-            response = {
+            console.log(`Updated account ${loggedInUsername} to username ${newUsername}`);
+            res.send({
               message: "Account username updated.", 
               error: false
-            };
+            });
           }
         }); 
       }
     });
   }
-  if(password && !response.error) {
-    // Adds password restrictions
-    if (password.length < 5 ||
-      !password.match(/[a-z]/g) ||
-      !password.match(/[A-Z]/g) ||
-      !password.match(/[0-9]/g)) {
-       response = {
-         message: response.message + " Password must contain 1 upper and lowercase letter, 1 number, and be longer than 4 characters", 
-         error: true
-       };
-     }
- else {
-   console.log("Express received: ", req.body);
-   
-   // Hash password
-   bcrypt.hash(password, saltRounds, function(err, hashedPassword) {
-     if(err) throw err;
-     else {
-        // Updating the username in the database
-        db.query("UPDATE users set password=? WHERE username=?", [hashedPassword, usernameToUpdate], (err, result) => { // 
-          if(err) {
-            console.log(err)
-            response = {
-              message: response.message + " Password update failed", 
-              error: true
-            };
-          }
-          else {
-            console.log(`Updated password of ${usernameToUpdate} to password ${password}`);
-            response = {
-              message: response.message + " Account password updated", 
-              error: false
-            };
-          }
-        }); 
-     }
-  })
- }
-}
-res.send(response)
 })
+
+
+// update_password: 
+// Expects an attribute newPassword that we will try to use to update the user's account
+app.post("/update_password", async(req, res) => {
+  let {newUsername, newPassword} = req.body;
+
+  console.log("/update_password");
+  console.log("Express received: ", req.body);
+
+  // Check if password is non-null, if null then don't update
+  if(newPassword) {
+    // Check password validity
+    if (password_invalid(newPassword) === true) {
+       res.send({
+         message: "Password must contain 1 upper and lowercase letter, 1 number, and be longer than 4 characters", 
+         error: true
+       });
+     }
+    else {    
+      // Hash password
+      bcrypt.hash(newPassword, saltRounds, function(err, hashedPassword) {
+        if(err) throw err;
+        else {
+          // Attempt to update password in database
+          db.query("UPDATE users set password=? WHERE username=?", [hashedPassword, newUsername], (err, result) => { 
+            if(err) {
+              console.log(err)
+              res.send({
+                message: "Password update failed", 
+                error: true
+              });
+            }
+            else {
+              console.log(`Updated password of ${newUsername} to password ${newPassword}`);
+              res.send({
+                message: "Account password updated", 
+                error: false
+              });
+            }
+          }); 
+        }
+      })
+    }
+  }
+})
+
 
 app.get("/home", cors(), async (req, res) => {
   res.send("This is the data for the home page from Express")
 })
+
 
 // Returns the specified username if it exists in the database
 app.get("/user/:username", async(req, res) => {

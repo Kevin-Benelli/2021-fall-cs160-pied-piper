@@ -34,7 +34,7 @@ function App() {
                     setLoggedInUsername={setLoggedInUsername}/>
             { loggedInUsername && 
               <div>
-                This div shows when a user is logged in.
+                This div shows when a user is logged in. ${loggedInUsername}
               </div>
             }
             { !loggedInUsername && 
