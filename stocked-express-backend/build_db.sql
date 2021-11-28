@@ -27,6 +27,7 @@ CREATE TABLE ticker(
 CREATE TABLE user_ticker(
     user_id INT UNSIGNED NOT NULL,
     ticker VARCHAR(5) NOT NULL,
+    position INT UNSIGNED NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (ticker) REFERENCES ticker(ticker_symbol)
 );

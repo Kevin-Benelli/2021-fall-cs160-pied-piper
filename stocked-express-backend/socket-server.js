@@ -323,6 +323,102 @@ app.get("/user/:username/watchlist", async(req, res) => {
   }
 })
 
+// Save a user's watchlist to the database
+app.post("/user/:username/add_watchlist", async(req, res) => {
+  let username = req.params['username'];
+  //let watchlist = req.body.watchlist;
+  let watchlist = [];
+  let input_tickers_are_valid = false;
+  // If the request does not contain a watch list
+  if(Object.keys(req.body).length == 0) {
+    res.sendStatus(404);
+    return;
+  }
+  else watchlist = req.body.watchlist;
+
+  for(let i = 0; i < watchlist.length; i++){
+    console.log(watchlist[i]);
+  }
+
+  const get_userid_query = `SELECT id FROM users WHERE username = ?`;
+  const delete_user_watchlist = `DELETE FROM user_ticker WHERE user_id = ?`;
+  let insert_user_ticker = `INSERT INTO user_ticker (user_id, ticker, position) values`;
+  let get_tickers = `SELECT * FROM ticker WHERE ticker_symbol =`;
+
+  for(let i = 0; i < watchlist.length; i++){
+    get_tickers += " '" + watchlist[i] + "' ";
+    if (i + 1 != watchlist.length) get_tickers += "OR ticker_symbol =";
+  }
+  // Verify that all tickers in the request exist in the database
+  try{
+    db.query(get_tickers, (get_tickers_err, get_tickers_result) => {
+      if(get_tickers_result.length != watchlist.length){
+        res.status(404).send("Invalid ticker in request");
+      }
+      else{
+        try{
+          // get the user's user_id
+          db.query(get_userid_query, username, (err, result) => {
+            if (result.length == 0) {
+              // user does not exist
+              console.log("User does not exist");
+              res.sendStatus(404);
+            }
+            else{
+              // console.log(result[0].id);
+              let user_id = result[0].id;
+
+              // delete the user's previous tickers
+              db.query(delete_user_watchlist, user_id, (err, delete_result) => {
+                if (delete_result.length == 0) {
+                  // delete statement failed
+                  res.sendStatus(404);
+                }
+                else {
+                  for(let i = 0; i < watchlist.length; i++){
+                    let position = i + 1;
+                    //result_tickers.push(result[i].ticker);
+                    insert_user_ticker += " (" + user_id + ", '" + watchlist[i] + "', " + position + ")";
+                    if (i + 1 != watchlist.length) insert_user_ticker += ",";
+                  }
+                  // console.log(insert_user_ticker);
+
+                  // insert new tickers to user's watchlist
+                  db.query(insert_user_ticker, (err, insert_result) => {
+                    if (insert_result.length == 0) {
+                      // insert statement failed
+                      res.sendStatus(404);
+                    }
+                    else {
+                      // new tickers successfully saved to user's watchlist
+                      res.json({
+                        "status": "success",
+                        "data": {
+                          "watchlist": watchlist
+                        }
+                      });
+                    }
+                  })
+                }
+              })
+            }
+          })
+        }
+        catch (err){
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+      }
+    })
+  }
+  catch (get_tickers_err){
+    console.log(get_tickers_err);
+    res.sendStatus(500);
+    return;
+  }
+})
+
 // Saves a user's message for a particular ticker chat in the database
 app.post("/ticker/:ticker_symbol/messages", async(req, res) => {
   let ticker_symbol = req.params['ticker_symbol'];
