@@ -11,6 +11,7 @@ import { ChartPage } from './components/chartpage';
 import { SettingsPage } from './components/settingspage';
 import { useStickyState } from 'utils/storage';
 import { SocketClient } from 'components/socketclient';
+import { HelpPage } from 'components/helppage';
 
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
           <HashRouter basename="/2021-fall-cs160-pied-piper">
             <Header loggedInUsername={loggedInUsername}
                     setLoggedInUsername={setLoggedInUsername}/>
-            { loggedInUsername && 
+            {/* { loggedInUsername && 
               <div>
                 This div shows when a user is logged in. ${loggedInUsername}
               </div>
@@ -41,7 +42,7 @@ function App() {
               <div>
                 This div shows when there's no logged in user.
               </div>
-            }
+            } */}
         
           
 
@@ -50,6 +51,7 @@ function App() {
             <Route path="/ticker/:ticker" children={<ChartPage/>} />
             <Route path="/settings" children={<SettingsPage loggedInUsername={loggedInUsername} setLoggedInUsername={setLoggedInUsername}/>}/>
             <Route path="/chat" children={<SocketClient />}/>
+            <Route path="/help" children={<HelpPage />}/>
 
             {/* <Route path="/news/:ticker" component={<NewsPage} /> */}
 

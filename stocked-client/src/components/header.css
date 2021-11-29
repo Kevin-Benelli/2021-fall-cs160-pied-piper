@@ -19,3 +19,13 @@
   height: var(--logosize);
   pointer-events: none;
 } 
+
+.header-help {
+  color: #5fbf00;
+  padding: 10px 10px 10px 15px;
+  outline: none; 
+  /* font-size: calc(var(--logosize) * 0.5);
+  font-weight: bold;
+  margin-top: calc(var(--logosize) * 0.5);
+  padding: 10px 10px 10px 10px; */
+}

@@ -257,7 +257,9 @@ app.post("/update_password", async(req, res) => {
 
 
 app.get("/home", cors(), async (req, res) => {
-  res.send("This is the data for the home page from Express")
+  // res.send("This is the data for the home page from Express")
+  // res.send("Welcome to Stocked! Login, search for a stock, or check the Help/FAQ page.")
+  res.send("")
 })
 
 
