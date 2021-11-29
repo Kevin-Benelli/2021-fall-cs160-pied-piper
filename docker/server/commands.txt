@@ -1,0 +1,4 @@
+npx create-react-app stocked-app
+docker build --tag react . 
+docker run react
+docker run reactdocker-compose run app
