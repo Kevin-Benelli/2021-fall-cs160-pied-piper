@@ -19,7 +19,7 @@ Dev steps:
 
 React page will be on localhost:3000/2021-fall-cs160-pied-piper
 
-Nodemon will be using localhost:5000
+Nodemon will be using localhost:5001
 
 4. A local MySQL server must also be running.
     - Follow the steps on the MySQL documentation to install and start MySQL: https://dev.mysql.com/doc/mysql-getting-started/en/
