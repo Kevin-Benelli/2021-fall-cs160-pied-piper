@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alignment, Navbar, NavbarGroup } from '@blueprintjs/core';
+import { Alignment, Icon, Navbar, NavbarGroup } from '@blueprintjs/core';
 import logo from '../pics/logo.png';
 import { Login } from './login';
 import './header.css'
@@ -29,6 +29,9 @@ export const Header = (props) => {
             { !loggedInUsername &&
               <Login setLoggedInUsername={setLoggedInUsername}/>
             }
+            <NavLink to="/help" className="header-help center">
+                <Icon icon="help" /> 
+            </NavLink>
           </NavbarGroup>
           
         </Navbar>

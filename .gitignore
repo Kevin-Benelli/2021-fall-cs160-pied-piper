@@ -4,3 +4,5 @@ stocked-client/package-lock.json
 node_modules/
 package.json
 package_lock.json
+stocked-client/package-lock.json
+stocked-express-backend/package-lock.json
