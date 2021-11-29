@@ -326,10 +326,8 @@ app.get("/user/:username/watchlist", async(req, res) => {
 // Save a user's watchlist to the database
 app.post("/user/:username/add_watchlist", async(req, res) => {
   let username = req.params['username'];
-  //let watchlist = req.body.watchlist;
   let watchlist = [];
-  let input_tickers_are_valid = false;
-  // If the request does not contain a watch list
+  // If the request is empty
   if(Object.keys(req.body).length == 0) {
     res.sendStatus(404);
     return;
@@ -353,16 +351,14 @@ app.post("/user/:username/add_watchlist", async(req, res) => {
   try{
     db.query(get_tickers, (get_tickers_err, get_tickers_result) => {
       if(get_tickers_result.length != watchlist.length){
-        res.status(404).send("Invalid ticker in request");
+        res.status(404).json({message: "Invalid ticker in request"});
       }
       else{
         try{
           // get the user's user_id
           db.query(get_userid_query, username, (err, result) => {
             if (result.length == 0) {
-              // user does not exist
-              console.log("User does not exist");
-              res.sendStatus(404);
+              res.status(404).json({message: "User not found"});
             }
             else{
               // console.log(result[0].id);
@@ -387,7 +383,7 @@ app.post("/user/:username/add_watchlist", async(req, res) => {
                   db.query(insert_user_ticker, (err, insert_result) => {
                     if (insert_result.length == 0) {
                       // insert statement failed
-                      res.sendStatus(404);
+                      res.status(500).json({message: "Failed to save the user's watchlist"});
                     }
                     else {
                       // new tickers successfully saved to user's watchlist
@@ -416,6 +412,75 @@ app.post("/user/:username/add_watchlist", async(req, res) => {
     console.log(get_tickers_err);
     res.sendStatus(500);
     return;
+  }
+})
+
+// Delete a ticker from the user's watchlist
+app.delete("/user/:username/watchlist", async(req, res) => {
+  let username = req.params['username'];
+  let ticker = req.body.ticker;
+
+  const get_userid_query = `SELECT id FROM users WHERE username = ?`;
+  const get_ticker_position = `SELECT position FROM user_ticker WHERE user_id = ? AND ticker = ?`;
+  const delete_ticker = `DELETE FROM user_ticker WHERE user_id = ? AND ticker = ?`;
+  const update_positions = `UPDATE user_ticker SET position = position - 1 WHERE user_id = ? AND position > ?`
+
+  // If the request body is empty
+  if(Object.keys(req.body).length == 0) {
+    res.status(404).json({message: "A ticker was not specified in the request"});
+    return;
+  }
+
+  try{
+    // get the user id from the username
+    db.query(get_userid_query, username, (err, result) => {
+      if (result.length == 0) {
+        // user does not exist
+        console.log("User does not exist");
+        res.status(404).json({message: "User does not exist"});
+      }
+      else {
+        let user_id = result[0].id;
+
+        db.query(get_ticker_position, [user_id, ticker], (err, result) => {
+          if (result.length == 0) {
+            // could not find the specified ticker for the user
+            console.log("Specified ticker could not be found for the user");
+            res.status(404).json({message: "Specified ticker could not be found for the user"});
+            return;
+          }
+          else{
+            let ticker_position = result[0].position;
+
+            db.query(delete_ticker, [user_id, ticker], (err, result) => {
+              if (result.length == 0) {
+                // could not find the specified ticker for the user
+                console.log("Failed to delete ticker");
+                res.status(500).json({message: "Failed to delete ticker from the user's watchlist"});
+                return;
+              }
+              else{
+                db.query(update_positions, [user_id, ticker_position], (err, result) => {
+                  if (result.length == 0) {
+                    // could not find the specified ticker for the user
+                    console.log("Failed to update watchlist order");
+                    res.status(500).json({message: "Failed to update watchlist order"});
+                    return;
+                  }
+                  else{
+                    res.status(200).json({message: "Successfully deleted ticker from the user's watchlist"});
+                  }
+                })
+              }
+            })
+          }
+        })
+      }
+    })
+  }
+  catch (err){
+    console.log(err);
+    res.sendStatus(500);
   }
 })
 
